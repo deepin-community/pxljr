@@ -1,0 +1,3 @@
+version=3
+opts=dversionmangle=s/\+repack\d+$// \
+http://sf.net/hp-pxl-jetready/pxljr-([\d?\.]+)\.tar\.gz

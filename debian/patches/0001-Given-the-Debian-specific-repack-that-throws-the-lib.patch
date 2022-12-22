@@ -1,0 +1,59 @@
+From 84f3a309b10e9b1be57f804ab161083f42ae8f72 Mon Sep 17 00:00:00 2001
+From: Didier Raboud <odyx@debian.org>
+Date: Sat, 10 Feb 2018 16:55:16 +0100
+Subject: Given the Debian-specific repack that throws the libijs and
+
+ libjpeg embedded copies out, this patch creates a simple buildsystem to
+ compile ijs_pxljr against the system versions of both.
+Last-Update: 2011-08-30
+---
+ Makefile.am  | 24 ++++++++++++++++++++++++
+ configure.ac |  8 ++++++++
+ 2 files changed, 32 insertions(+)
+ create mode 100644 Makefile.am
+ create mode 100644 configure.ac
+
+diff --git a/Makefile.am b/Makefile.am
+new file mode 100644
+index 0000000..a42fc79
+--- /dev/null
++++ b/Makefile.am
+@@ -0,0 +1,24 @@
++AUTOMAKE_OPTIONS = 1.11 foreign
++
++bin_PROGRAMS = ijs_pxljr
++
++ijs_pxljr_SOURCES = i_job_footer.c \
++ i_job_header.c \
++ i_page_footer.c \
++ i_page_header.c \
++ i_status.c \
++ i_stripe.c \
++ i_write.c \
++ i_main.c \
++ i_init.c \
++ i_exit.c \
++ i_compress.c \
++ pxl_jpeg.c \
++ jdatadbf.c \
++ jccolor.c \
++ mode12gray.c \
++ mode12color.c \
++ pxl_mediasize.c
++
++ijs_pxljr_CPPFLAGS = -I/usr/include/ijs
++ijs_pxljr_LDADD  = -lijs -ljpeg
+diff --git a/configure.ac b/configure.ac
+new file mode 100644
+index 0000000..5a8e5cd
+--- /dev/null
++++ b/configure.ac
+@@ -0,0 +1,8 @@
++AC_INIT([pxljr], [1.3], [pxljr@packages.debian.org], [pxljr], [http://hp-pxl-jetready.sourceforge.net/])
++AC_PREREQ([2.59])
++AM_INIT_AUTOMAKE([1.11 foreign])
++AC_PROG_CC
++
++AC_CONFIG_FILES([Makefile])
++AC_CONFIG_SRCDIR(i_main.c)
++AC_OUTPUT
